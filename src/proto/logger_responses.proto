@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package domain;
+
+option go_package = "github.com/yogyrahmawan/logger_service/src/domain";
+
+import "logger.proto";
+message LoggerResponsesMessage {
+	repeated LoggerMessage loggerMessages = 1;
+}
