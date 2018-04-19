@@ -1,6 +1,8 @@
 syntax = "proto3";
 package pb;
 
+import "google/protobuf/Timestamp.proto";
+
 message LoggerMessage {
 	string IpPort = 1;
 	string ServiceName = 2;

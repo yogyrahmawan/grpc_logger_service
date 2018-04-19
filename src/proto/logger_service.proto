@@ -5,22 +5,19 @@ package pb;
 import "logger.proto";
 import "logger_response.proto";
 import "logger_responses.proto";
-import "google/protobuf/empty.proto";
+import "get_logger_request.proto";
 import "google/api/annotations.proto";
 
 service LoggerService {
 	rpc SendLog(stream LoggerMessage) returns (LoggerResponse);
-	rpc GetLog(google.protobuf.Empty) returns (LoggerResponsesMessage) {
+	rpc GetLog(GetLoggerRequest) returns (LoggerResponsesMessage) {
 	  option(google.api.http) = {
 	  	get: "/api/v1/logs"
 		additional_bindings {
-			get: "/api/v1/logs/{service_name}"	
+			get: "/api/v1/logs/{service_name}/service_name"	
 		}
 		additional_bindings {
-			get: "/api/v1/logs/{service_name}/level/{level}"
-		}
-		additional_bindings {	
-			get: "/api/v1/logs/{service_name}/text/{text}"
+			get: "/api/v1/logs/{level}/level"
 		}
  	  };	
 	};

@@ -5,17 +5,37 @@ import (
 	"net"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/yogyrahmawan/logger_service/src/utils"
+
 	"github.com/yogyrahmawan/logger_service/src/pb"
+	"github.com/yogyrahmawan/logger_service/src/store"
+	"github.com/yogyrahmawan/logger_service/src/store/mongostore"
+	"github.com/yogyrahmawan/logger_service/src/utils"
 	grpc "google.golang.org/grpc"
 )
 
-// Server is container for server struct
-type Server struct{}
+var (
+	mongoStore store.Store
+)
 
-// RunServer run rpc server
+// RunServer initialise and run server
 func RunServer() {
+	st, err := initStore()
+	if err != nil {
+		return
+	}
+
+	mongoStore = st
 	startGRPCServer()
+}
+
+func initStore() (*mongostore.MongoStore, error) {
+	st, err := mongostore.NewMongoStore(utils.Cfg.DatabaseURL)
+	if err != nil {
+		log.Fatalf("error at init store, err =%v", err)
+		return nil, err
+	}
+
+	return st, nil
 }
 
 func startGRPCServer() error {

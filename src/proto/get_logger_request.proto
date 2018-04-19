@@ -1,0 +1,8 @@
+syntax="proto3";
+
+package pb;
+
+message GetLoggerRequest {
+    string ServiceName = 1;
+    string Level = 2;
+}

@@ -19,7 +19,7 @@ type LoggerResponsesMessage struct {
 func (m *LoggerResponsesMessage) Reset()                    { *m = LoggerResponsesMessage{} }
 func (m *LoggerResponsesMessage) String() string            { return proto.CompactTextString(m) }
 func (*LoggerResponsesMessage) ProtoMessage()               {}
-func (*LoggerResponsesMessage) Descriptor() ([]byte, []int) { return fileDescriptor2, []int{0} }
+func (*LoggerResponsesMessage) Descriptor() ([]byte, []int) { return fileDescriptor3, []int{0} }
 
 func (m *LoggerResponsesMessage) GetLoggerMessages() []*LoggerMessage {
 	if m != nil {
@@ -32,9 +32,9 @@ func init() {
 	proto.RegisterType((*LoggerResponsesMessage)(nil), "pb.LoggerResponsesMessage")
 }
 
-func init() { proto.RegisterFile("logger_responses.proto", fileDescriptor2) }
+func init() { proto.RegisterFile("logger_responses.proto", fileDescriptor3) }
 
-var fileDescriptor2 = []byte{
+var fileDescriptor3 = []byte{
 	// 107 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0xcb, 0xc9, 0x4f, 0x4f,
 	0x4f, 0x2d, 0x8a, 0x2f, 0x4a, 0x2d, 0x2e, 0xc8, 0xcf, 0x2b, 0x4e, 0x2d, 0xd6, 0x2b, 0x28, 0xca,
