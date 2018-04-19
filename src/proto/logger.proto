@@ -1,9 +1,6 @@
 syntax = "proto3";
-package domain; 
+package pb;
 
-import "google/protobuf/timestamp.proto";
-
-option go_package = "github.com/yogyrahmawan/logger_service/src/domain";
 message LoggerMessage {
 	string IpPort = 1;
 	string ServiceName = 2;

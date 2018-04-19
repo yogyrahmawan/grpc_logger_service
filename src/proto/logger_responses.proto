@@ -1,8 +1,6 @@
 syntax = "proto3";
 
-package domain;
-
-option go_package = "github.com/yogyrahmawan/logger_service/src/domain";
+package pb;
 
 import "logger.proto";
 message LoggerResponsesMessage {

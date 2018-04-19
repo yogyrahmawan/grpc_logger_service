@@ -1,6 +1,6 @@
 syntax="proto3";
 
-package api;
+package pb;
 
 import "logger.proto";
 import "logger_response.proto";
@@ -8,10 +8,9 @@ import "logger_responses.proto";
 import "google/protobuf/empty.proto";
 import "google/api/annotations.proto";
 
-option go_package = "github.com/yogyrahmawan/logger_service/src/api";
 service LoggerService {
-	rpc SendLog(stream domain.LoggerMessage) returns (domain.LoggerResponse);
-	rpc GetLog(google.protobuf.Empty) returns (domain.LoggerResponsesMessage) {
+	rpc SendLog(stream LoggerMessage) returns (LoggerResponse);
+	rpc GetLog(google.protobuf.Empty) returns (LoggerResponsesMessage) {
 	  option(google.api.http) = {
 	  	get: "/api/v1/logs"
 		additional_bindings {

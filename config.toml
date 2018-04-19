@@ -1,0 +1,17 @@
+[development]
+rpc_host = "localhost"
+rpc_port = "9003"
+log_level="debug"
+database_url = "postgres://postgres:postgres@localhost:5433/edc_server?sslmode=disable"
+
+[test]
+rpc_host = "localhost"
+rpc_port = "9003"
+database_url = "postgres://postgres:postgres@edc-db:5432/edc_server?sslmode=disable"
+log_level="debug"
+
+[production]
+rpc_host = "localhost"
+rpc_port = "9003"
+database_url = "postgres://postgres:postgres@localhost:5433/edc_server?sslmode=disable"
+log_level="debug"
