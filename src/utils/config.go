@@ -48,6 +48,8 @@ func LoadConfig(cmd *cobra.Command) {
 	cfg := domain.NewConfig(viper.GetString(environment+".rpc_host"),
 		viper.GetString(environment+".database_url"),
 		viper.GetString(environment+".log_level"),
+		viper.GetString(environment+".server_cert"),
+		viper.GetString(environment+".server_key"),
 		viper.GetInt(environment+".rpc_port"),
 	)
 

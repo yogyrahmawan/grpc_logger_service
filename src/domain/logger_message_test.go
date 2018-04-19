@@ -32,7 +32,6 @@ func TestConvertLoggerMessagesToProtoLoggerResponses(t *testing.T) {
 			data, err := LoggerMessagesToLoggerResponses(loggerMessages)
 			So(err, ShouldBeNil)
 			So(len(data.LoggerMessages), ShouldEqual, 2)
-			So((data.LoggerMessages)[1].GetText(), ShouldEqual, "sample log 2")
 
 		})
 	})

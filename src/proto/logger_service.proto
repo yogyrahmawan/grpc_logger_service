@@ -9,7 +9,7 @@ import "get_logger_request.proto";
 import "google/api/annotations.proto";
 
 service LoggerService {
-	rpc SendLog(stream LoggerMessage) returns (LoggerResponse);
+	rpc SendLog(LoggerMessage) returns (LoggerResponse);
 	rpc GetLog(GetLoggerRequest) returns (LoggerResponsesMessage) {
 	  option(google.api.http) = {
 	  	get: "/api/v1/logs"

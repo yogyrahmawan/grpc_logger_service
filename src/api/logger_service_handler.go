@@ -2,7 +2,6 @@ package api
 
 import (
 	"errors"
-	"io"
 
 	log "github.com/Sirupsen/logrus"
 	ptype "github.com/golang/protobuf/ptypes"
@@ -15,51 +14,29 @@ import (
 type Server struct{}
 
 // SendLog handle send log from client
-func (s *Server) SendLog(srv pb.LoggerService_SendLogServer) error {
-	log.Info("starting send log")
-	ctx := srv.Context()
-	for {
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-		default:
-		}
-
-		// receive data from stream
-		req, err := srv.Recv()
-		if err == io.EOF {
-			// end of message
-			log.Info("exiting because eof")
-			return srv.SendAndClose(&pb.LoggerResponse{
-				Status: "ok",
-			})
-		}
-
-		if err != nil {
-			log.Errorf("receive error %v", err)
-			return err
-		}
-
-		// save it
-		log.Infof("got request %v", req)
-		// convert timestamp to time
-		t, err := ptype.Timestamp(req.GetCreatedAt())
-		if err != nil {
-			log.Errorf("error converting timestamp, err = %v", err)
-			return err
-		}
-
-		logMsg := domain.NewLoggerMessage(req.GetIpPort(),
-			req.GetServiceName(),
-			req.GetLevel(),
-			req.GetText(),
-			t)
-		saveRes := <-mongoStore.LoggerStore().Save(logMsg)
-		if saveRes.Err != nil {
-			log.Errorf("error when saving data, err =%v", saveRes.Err.Error())
-			return errors.New(saveRes.Err.Error())
-		}
+func (s *Server) SendLog(ctx context.Context, req *pb.LoggerMessage) (*pb.LoggerResponse, error) {
+	// convert timestamp to time
+	t, err := ptype.Timestamp(req.GetCreatedAt())
+	if err != nil {
+		log.Errorf("error converting timestamp, err = %v", err)
+		return nil, err
 	}
+
+	logMsg := domain.NewLoggerMessage(req.GetIpPort(),
+		req.GetServiceName(),
+		req.GetLevel(),
+		req.GetText(),
+		t)
+	saveRes := <-mongoStore.LoggerStore().Save(logMsg)
+	if saveRes.Err != nil {
+		log.Errorf("error when saving data, err =%v", saveRes.Err.Error())
+		return nil, errors.New(saveRes.Err.Error())
+	}
+
+	return &pb.LoggerResponse{
+		Status: "ok",
+	}, nil
+
 }
 
 // GetLog handle get log from client

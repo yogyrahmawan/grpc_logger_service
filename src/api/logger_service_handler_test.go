@@ -74,31 +74,10 @@ func TestSendLog(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	// create mock
-	stream := mockspb.NewMockLoggerService_SendLogClient(ctrl)
-
-	// set expectation on sending
-	stream.EXPECT().Send(
-		gomock.Any(),
-	).Return(nil)
-
-	stream.EXPECT().Send(
-		postMsg,
-	).Return(nil)
-
-	// set expectation on receiving
-	stream.EXPECT().RecvMsg(postMsg).Return(nil)
-	stream.EXPECT().CloseAndRecv().Return(loggerResponse, nil)
-
-	// client interface
 	client := mockspb.NewMockLoggerServiceClient(ctrl)
 	client.EXPECT().SendLog(
-		gomock.Any(),
-	).Return(stream, nil)
-
-	client.EXPECT().SendLog(
-		postMsg,
-	).Return(stream, nil)
+		gomock.Any(), postMsg,
+	).Return(loggerResponse, nil)
 
 	if err := testSendLog(client); err != nil {
 		t.Fatalf("Test failed: %v", err)
@@ -106,29 +85,16 @@ func TestSendLog(t *testing.T) {
 }
 
 func testSendLog(client pb.LoggerServiceClient) error {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 100*time.Second)
 	defer cancel()
 
-	stream, err := client.SendLog(ctx)
+	res, err := client.SendLog(ctx, postMsg)
 	if err != nil {
 		return err
 	}
 
-	if err := stream.Send(postMsg); err != nil {
-		return err
-	}
-
-	got, err := stream.CloseAndRecv()
-	if err != nil {
-		return err
-	}
-
-	if !proto.Equal(got, loggerResponse) {
-		return fmt.Errorf("stream.Recv() = %v, want %v", got, loggerResponses)
-	}
-
-	if err := stream.CloseSend(); err != nil {
-		return err
+	if !proto.Equal(res, loggerResponse) {
+		return fmt.Errorf("received = %v, want %v", res, loggerResponses)
 	}
 
 	return nil

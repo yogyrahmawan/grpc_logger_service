@@ -5,6 +5,7 @@ type Config struct {
 	RPCServer    *rpcServer
 	LoggerConfig *loggerConfig
 	DatabaseURL  string
+	ServerCert   *certConfig
 }
 
 type rpcServer struct {
@@ -16,8 +17,13 @@ type loggerConfig struct {
 	Level string
 }
 
+type certConfig struct {
+	ServerCrtPath string
+	ServerKeyPath string
+}
+
 // NewConfig create new configuration
-func NewConfig(rpcHost, dbURL, logLevel string, rpcPort int) *Config {
+func NewConfig(rpcHost, dbURL, logLevel, serverCertPath, serverKeyPath string, rpcPort int) *Config {
 	cfg := new(Config)
 
 	// create rpcserver config
@@ -34,5 +40,10 @@ func NewConfig(rpcHost, dbURL, logLevel string, rpcPort int) *Config {
 	cfg.LoggerConfig = lg
 	cfg.DatabaseURL = dbURL
 
+	// cert
+	crtConfig := new(certConfig)
+	crtConfig.ServerCrtPath = serverCertPath
+	crtConfig.ServerKeyPath = serverKeyPath
+	cfg.ServerCert = crtConfig
 	return cfg
 }
