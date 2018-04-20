@@ -4,10 +4,12 @@ import (
 	"errors"
 	"fmt"
 	"net"
+	"net/http"
 	"strings"
 
 	log "github.com/Sirupsen/logrus"
 	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"golang.org/x/net/context"
 
 	"github.com/yogyrahmawan/logger_service/src/pb"
@@ -31,7 +33,21 @@ func RunServer() {
 	}
 
 	mongoStore = st
-	startGRPCServer()
+
+	go func() {
+		if err := startGRPCServer(); err != nil {
+			log.Fatalf("failed start grpc, err = %v", err)
+		}
+	}()
+
+	go func() {
+		if err := startRestAPIServer(); err != nil {
+			log.Fatalf("failed start rest, err = %v", err)
+		}
+	}()
+
+	// block indifinitely
+	select {}
 }
 
 func initStore() (*mongostore.MongoStore, error) {
@@ -79,6 +95,45 @@ func startGRPCServer() error {
 	return nil
 }
 
+func startRestAPIServer() error {
+	ctx := context.Background()
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
+
+	// rest place token in the http header
+	mux := runtime.NewServeMux(runtime.WithIncomingHeaderMatcher(credMatcher))
+
+	// get certificate
+	creds, err := credentials.NewClientTLSFromFile(utils.Cfg.ServerCert.ServerCrtPath, "")
+	if err != nil {
+		log.Errorf("cannot load tls, err = %v", err)
+		return err
+	}
+
+	// setup options
+	opts := []grpc.DialOption{grpc.WithTransportCredentials(creds)}
+
+	// RegisterService
+	err = pb.RegisterLoggerServiceHandlerFromEndpoint(ctx, mux, fmt.Sprintf(":%d", utils.Cfg.RPCServer.RPCPort), opts)
+	if err != nil {
+		log.Errorf("cannot register service : %v", err)
+		return err
+	}
+
+	log.Info("starting HTTP 1 prtocol on " + fmt.Sprintf(":%d", utils.Cfg.RestServer.Port))
+	http.ListenAndServe(fmt.Sprintf(":%d", utils.Cfg.RPCServer.RPCPort), mux)
+
+	return nil
+}
+
+func credMatcher(header string) (metadataName string, ok bool) {
+	if header == "token" {
+		return header, true
+	}
+
+	return "", false
+}
+
 // client token use JWT with hmac algorithm
 func validateJWTToken(ctx context.Context) error {
 	if mtd, ok := metadata.FromIncomingContext(ctx); ok {
@@ -86,18 +141,21 @@ func validateJWTToken(ctx context.Context) error {
 		if !claimJWTToken(clientToken) {
 			return fmt.Errorf("not valid token")
 		}
+
+		return nil
 	}
 
 	return errors.New("missing credentials")
 }
 
 func claimJWTToken(clientToken string) bool {
+	log.Info("got token : " + clientToken)
 	token, err := jwt.Parse(clientToken, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
 
-		return "test", nil
+		return []byte("113070"), nil
 	})
 
 	if err != nil {

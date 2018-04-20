@@ -14,10 +14,10 @@ service LoggerService {
 	  option(google.api.http) = {
 	  	get: "/api/v1/logs"
 		additional_bindings {
-			get: "/api/v1/logs/{service_name}/service_name"	
+			get: "/api/v1/logs/{ServiceName}/service_name"	
 		}
 		additional_bindings {
-			get: "/api/v1/logs/{level}/level"
+			get: "/api/v1/logs/{Level}/level"
 		}
  	  };	
 	};

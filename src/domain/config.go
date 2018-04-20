@@ -3,6 +3,7 @@ package domain
 // Config represent parameter config
 type Config struct {
 	RPCServer    *rpcServer
+	RestServer   *restServer
 	LoggerConfig *loggerConfig
 	DatabaseURL  string
 	ServerCert   *certConfig
@@ -11,6 +12,11 @@ type Config struct {
 type rpcServer struct {
 	RPCHost string
 	RPCPort int
+}
+
+type restServer struct {
+	Host string
+	Port int
 }
 
 type loggerConfig struct {
@@ -23,7 +29,7 @@ type certConfig struct {
 }
 
 // NewConfig create new configuration
-func NewConfig(rpcHost, dbURL, logLevel, serverCertPath, serverKeyPath string, rpcPort int) *Config {
+func NewConfig(rpcHost, restHost, dbURL, logLevel, serverCertPath, serverKeyPath string, rpcPort, restPort int) *Config {
 	cfg := new(Config)
 
 	// create rpcserver config
@@ -32,6 +38,12 @@ func NewConfig(rpcHost, dbURL, logLevel, serverCertPath, serverKeyPath string, r
 	rpcServer.RPCPort = rpcPort
 
 	cfg.RPCServer = rpcServer
+
+	// rest server
+	restServer := new(restServer)
+	restServer.Host = restHost
+	restServer.Port = restPort
+	cfg.RestServer = restServer
 
 	// create log
 	lg := new(loggerConfig)
@@ -45,5 +57,6 @@ func NewConfig(rpcHost, dbURL, logLevel, serverCertPath, serverKeyPath string, r
 	crtConfig.ServerCrtPath = serverCertPath
 	crtConfig.ServerKeyPath = serverKeyPath
 	cfg.ServerCert = crtConfig
+
 	return cfg
 }

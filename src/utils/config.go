@@ -34,23 +34,25 @@ func LoadConfig(cmd *cobra.Command) {
 	}
 
 	if env, _ := cmd.Flags().GetString("env"); env != "" {
-		log.Println("running server at environment")
+		log.Println("running server at environment, env = " + env)
 		environment = env
 	} else {
 		environment = "test"
 	}
 
 	if err := viper.ReadInConfig(); err != nil {
-		log.Fatalf("cannot read config")
+		log.Fatalf("cannot read config, err = " + err.Error())
 		return
 	}
 
 	cfg := domain.NewConfig(viper.GetString(environment+".rpc_host"),
+		viper.GetString(environment+".rest_host"),
 		viper.GetString(environment+".database_url"),
 		viper.GetString(environment+".log_level"),
 		viper.GetString(environment+".server_cert"),
 		viper.GetString(environment+".server_key"),
 		viper.GetInt(environment+".rpc_port"),
+		viper.GetInt(environment+".rest_port"),
 	)
 
 	log.Printf("config : %v", cfg)
