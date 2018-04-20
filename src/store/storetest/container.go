@@ -42,7 +42,7 @@ func (c *RunningContainer) RunCustomCommand(args []string) error {
 	return exec.Command("docker", args...).Run()
 }
 
-// NewPostgreSQLContainer instantiate postgressql container
+// NewMongoDBContainer instantiate mongodb container
 func NewMongoDBContainer() (*RunningContainer, string, error) {
 	container, err := runContainer([]string{
 		"-p", "27018:27017",
@@ -51,7 +51,7 @@ func NewMongoDBContainer() (*RunningContainer, string, error) {
 	if err != nil {
 		return nil, "", err
 	}
-	log.Info("Waiting for postgres connectivity")
+	log.Info("Waiting for mongodb connectivity")
 	port := container.NetworkSettings.Ports["27017/tcp"][0].HostPort
 	if err := waitForPort(port); err != nil {
 		container.Stop()
