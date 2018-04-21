@@ -5,7 +5,7 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 
-	"github.com/yogyrahmawan/logger_service/src/store"
+	"github.com/yogyrahmawan/grpc_logger_service/src/store"
 	"gopkg.in/mgo.v2"
 )
 

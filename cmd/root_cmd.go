@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"github.com/yogyrahmawan/logger_service/src/api"
-	"github.com/yogyrahmawan/logger_service/src/utils"
+	"github.com/yogyrahmawan/grpc_logger_service/src/api"
+	"github.com/yogyrahmawan/grpc_logger_service/src/utils"
 
 	"github.com/spf13/cobra"
 )

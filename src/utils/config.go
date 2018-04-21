@@ -5,7 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/yogyrahmawan/logger_service/src/domain"
+	"github.com/yogyrahmawan/grpc_logger_service/src/domain"
 )
 
 var (

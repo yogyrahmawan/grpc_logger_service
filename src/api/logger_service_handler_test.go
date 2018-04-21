@@ -9,8 +9,8 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/golang/protobuf/proto"
 	"github.com/golang/protobuf/ptypes"
-	"github.com/yogyrahmawan/logger_service/src/mockspb"
-	"github.com/yogyrahmawan/logger_service/src/pb"
+	"github.com/yogyrahmawan/grpc_logger_service/src/mockspb"
+	"github.com/yogyrahmawan/grpc_logger_service/src/pb"
 	"golang.org/x/net/context"
 )
 
