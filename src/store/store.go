@@ -1,7 +1,7 @@
 package store
 
 import (
-	"github.com/yogyrahmawan/logger_service/src/domain"
+	"github.com/yogyrahmawan/grpc_logger_service/src/domain"
 )
 
 // Result is container to get result from db

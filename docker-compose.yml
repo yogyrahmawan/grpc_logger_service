@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+   mongodb:
+      image: mongo
+      container_name: mongodb
+      environment:
+        - MONGO_DATA_DIR=/data/db
+        - MONGO_LOG_DIR=/dev/null
+      volumes:
+        - ./data/db:/data/db
+      ports:
+        - 27018:27017
+      healthcheck: 
+        test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/test --quiet
+        interval: 5s
+        timeout: 5s
+        retries: 12
+      command: mongod --smallfiles --logpath=/dev/null # --quiet
+   
+   logger_service:
+      image: logger_service 
+      container_name: logger_service 
+      build:
+         context: .
+      depends_on:
+         - mongodb 
+      ports: 
+         - 9005:9005
+         - 9006:9006 
+      command: /root/go/bin/grpc_logger_service --config /root/pathgo/src/github.com/yogyrahmawan/grpc_logger_service/config.toml --env test 

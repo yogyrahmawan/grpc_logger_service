@@ -5,8 +5,8 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 	ptype "github.com/golang/protobuf/ptypes"
-	"github.com/yogyrahmawan/logger_service/src/domain"
-	"github.com/yogyrahmawan/logger_service/src/pb"
+	"github.com/yogyrahmawan/grpc_logger_service/src/domain"
+	"github.com/yogyrahmawan/grpc_logger_service/src/pb"
 	"golang.org/x/net/context"
 )
 

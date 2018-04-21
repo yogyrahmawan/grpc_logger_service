@@ -6,8 +6,8 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 	. "github.com/smartystreets/goconvey/convey"
-	"github.com/yogyrahmawan/logger_service/src/domain"
-	"github.com/yogyrahmawan/logger_service/src/store"
+	"github.com/yogyrahmawan/grpc_logger_service/src/domain"
+	"github.com/yogyrahmawan/grpc_logger_service/src/store"
 )
 
 func TestLoggerStore(t *testing.T) {

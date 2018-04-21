@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/yogyrahmawan/logger_service/cmd"
+	"github.com/yogyrahmawan/grpc_logger_service/cmd"
 )
 
 func main() {

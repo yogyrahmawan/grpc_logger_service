@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/golang/protobuf/ptypes"
-	"github.com/yogyrahmawan/logger_service/src/pb"
+	"github.com/yogyrahmawan/grpc_logger_service/src/pb"
 )
 
 // LoggerMessage is internal logger message struct

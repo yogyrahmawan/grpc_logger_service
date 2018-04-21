@@ -12,7 +12,7 @@ import (
 	"time"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/yogyrahmawan/logger_service/src/utils"
+	"github.com/yogyrahmawan/grpc_logger_service/src/utils"
 )
 
 // Container represent container struct
