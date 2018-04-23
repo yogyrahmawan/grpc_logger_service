@@ -26,7 +26,7 @@ func (m *MongoLoggerStore) GetAll() store.Channel {
 
 		var loggers []*domain.LoggerMessage
 		if err := m.dB(sesCopy).C("logger").Find(nil).All(&loggers); err != nil {
-			result.Err = domain.NewApplicationError("Logger.GetAll",
+			result.Err = domain.NewStoreError("Logger.GetAll",
 				"Error get all records",
 				"error = "+err.Error(),
 			)
@@ -52,7 +52,7 @@ func (m *MongoLoggerStore) Save(lm *domain.LoggerMessage) store.Channel {
 		result := store.Result{}
 
 		if err := m.dB(sesCopy).C("logger").Insert(lm); err != nil {
-			result.Err = domain.NewApplicationError("MongoLoggerStore.SaveData",
+			result.Err = domain.NewStoreError("MongoLoggerStore.SaveData",
 				"error saving data",
 				"detail : "+err.Error(),
 			)
@@ -79,7 +79,7 @@ func (m *MongoLoggerStore) GetByServiceName(serviceName string) store.Channel {
 
 		loggers := []*domain.LoggerMessage{}
 		if err := m.dB(sesCopy).C("logger").Find(bson.M{"service_name": serviceName}).All(&loggers); err != nil {
-			result.Err = domain.NewApplicationError(
+			result.Err = domain.NewStoreError(
 				"MongoLoggerStore.GetByServiceName",
 				"error getByServiceName",
 				"error "+err.Error(),
@@ -109,7 +109,7 @@ func (m *MongoLoggerStore) GetByLevel(level string) store.Channel {
 		var loggers []*domain.LoggerMessage
 
 		if err := m.dB(sesCopy).C("logger").Find(bson.M{"level": level}).All(&loggers); err != nil {
-			result.Err = domain.NewApplicationError(
+			result.Err = domain.NewStoreError(
 				"MongoLoggerStore.GetByServiceName",
 				"error getByServiceName",
 				"error "+err.Error(),

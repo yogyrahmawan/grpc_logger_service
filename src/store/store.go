@@ -7,7 +7,7 @@ import (
 // Result is container to get result from db
 type Result struct {
 	Data interface{}
-	Err  *domain.ApplicationError
+	Err  *domain.StoreError
 }
 
 // Channel hold channel of result

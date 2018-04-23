@@ -3,10 +3,10 @@ package domain
 import . "github.com/smartystreets/goconvey/convey"
 import "testing"
 
-func TestApplicationError(t *testing.T) {
+func TestStoreError(t *testing.T) {
 	Convey("test application error ", t, func() {
 		// creating object
-		n := NewApplicationError("this", "error", "error construct")
+		n := NewStoreError("this", "error", "error construct")
 
 		Convey("validate creating object", func() {
 			So(n.At, ShouldEqual, "this")

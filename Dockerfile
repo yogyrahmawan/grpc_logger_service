@@ -1,6 +1,6 @@
 FROM yogyrahmawan/docker-go-debian
 
-RUN apt-get -y install git curl && \ 
+RUN apt-get -y install git curl netcat && \ 
 	mkdir -p /root/pathgo/src/github.com/yogyrahmawan/grpc_logger_service && \
 	mkdir -p /root/pathgo/src/github.com/yogyrahmawan/cmd && \
 	mkdir -p /root/pathgo/src/github.com/yogyrahmawan/src && \
@@ -22,3 +22,5 @@ RUN go get github.com/golang/dep/cmd/dep
 RUN dep ensure -vendor-only
 RUN go build
 RUN go install
+
+CMD ["./run.sh"]

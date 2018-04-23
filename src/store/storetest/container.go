@@ -45,7 +45,7 @@ func (c *RunningContainer) RunCustomCommand(args []string) error {
 // NewMongoDBContainer instantiate mongodb container
 func NewMongoDBContainer() (*RunningContainer, string, error) {
 	container, err := runContainer([]string{
-		"-p", "27018:27017",
+		"-p", "30000:27017",
 		"mongo",
 	})
 	if err != nil {

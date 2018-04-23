@@ -21,19 +21,21 @@ func StoreTest(t *testing.T, f func(*testing.T, store.Store)) {
 	})
 }
 
-func initStores() {
+func initStores() error {
 	container, dbURL, err := storetest.NewMongoDBContainer()
 	if err != nil {
 		log.Error("error init stores, err = " + err.Error())
-		return
+		return err
 	}
 
 	testingStore.Container = container
 	testingStore.Store, err = NewMongoStore(dbURL)
 	if err != nil {
 		log.Error("error creating mongostore in init stores, err = " + err.Error())
-		return
+		return err
 	}
+
+	return nil
 }
 
 func stopStores() {
@@ -41,7 +43,10 @@ func stopStores() {
 }
 
 func TestMain(m *testing.M) {
-	initStores()
+	if err := initStores(); err != nil {
+		return
+	}
+
 	status := 0
 	defer func() {
 		stopStores()

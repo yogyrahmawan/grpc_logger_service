@@ -21,6 +21,8 @@ services:
    logger_service:
       image: logger_service 
       container_name: logger_service 
+      environment:
+        - jwt_key="113070"
       build:
          context: .
       depends_on:
@@ -28,4 +30,3 @@ services:
       ports: 
          - 9005:9005
          - 9006:9006 
-      command: /root/go/bin/grpc_logger_service --config /root/pathgo/src/github.com/yogyrahmawan/grpc_logger_service/config.toml --env test 
