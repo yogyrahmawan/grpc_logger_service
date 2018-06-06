@@ -1,6 +1,6 @@
 FROM yogyrahmawan/docker-go-debian
 
-RUN apt-get -y install git curl netcat && \ 
+RUN apt-get update && apt-get -y install git curl netcat && \ 
 	mkdir -p /root/pathgo/src/github.com/yogyrahmawan/grpc_logger_service && \
 	mkdir -p /root/pathgo/src/github.com/yogyrahmawan/cmd && \
 	mkdir -p /root/pathgo/src/github.com/yogyrahmawan/src && \
