@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/yogyrahmawan/grpc_logger_service.png)](https://travis-ci.com/yogyrahmawan/grpc_logger_service)
+
 # grpc_logger_service
 Mini centralized log based on grpc 
 
